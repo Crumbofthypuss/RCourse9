@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## The PimaIndiansDiabetes2 Dataset
 
-This data set is based on a data set from the National Institute of Diabetes and Digestive and Kidney Diseases. All patients here are females with at least 21 years of age of Pima Indian Heritage. Shown below are the first 5 rows of the data set:
+This data set is based on a data set from the National Institute of Diabetes and Digestive and Kidney Diseases. All patients here are females with at least 21 years of age of Pima Indian Heritage. Shown below are the first 5 rows of the dataset:
 ```{r echo=FALSE,comment=NA}
 library(mlbench)
 library(MASS)

@@ -1,0 +1,47 @@
+---
+title: "Determining Presence of Diabetes"
+author: "Matthew Evangelista"
+date: "2/12/2021"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## The PimaIndiansDiabetes2 Dataset
+
+This data set is based on a data set from the National Institute of Diabetes and Digestive and Kidney Diseases. All patients here are females with at least 21 years of age of Pima Indian Heritage. Shown below are the first 5 rows of the data set:
+```{r echo=FALSE,comment=NA}
+library(mlbench)
+library(MASS)
+data(PimaIndiansDiabetes2,package="mlbench")
+head(PimaIndiansDiabetes2)
+```
+
+## Determining the best model to use
+
+On the data set shown, we have 8 variables that we can use to determine the outcome (the diabetes column). We use binary logistic regression since the result can only be either positive or negative. We then use stepAIC to determine the best model and we will use that to determination of presence of diabetes. Based on calculations, the best model is described below:
+
+```{r echo=FALSE,comment=NA}
+newDiabetesData<- na.omit(PimaIndiansDiabetes2)
+model<- glm(diabetes~.,family=binomial,data=newDiabetesData)
+bestmodel<- stepAIC(model,direction="both",trace=0)
+paste0("formula: ",bestmodel$formula[2],bestmodel$formula[1],bestmodel$formula[3])
+bestmodel$coefficients
+```
+## Using the model to determine if you have diabetes
+
+Now that we have the model, we can determine the probability that you have diabetes. To give an example, lets give values to the features needed by the best model. Assuming that we had 4 pregnancies, a plasma glucose concentration of 121, a BMI of 30, a pedigree function of 0.5, and an age of 40 years old, we can know if you most likely have diabetes.
+
+```{r echo=FALSE,results='asis'}
+newdata<- data.frame(pregnant=4,glucose=121,mass=30,pedigree=0.5,age=40)
+newdata$probability<- predict(bestmodel,newdata=newdata,type="response")
+newdata$result<- ifelse(newdata$probability>0.5,"positive","negative")
+knitr::kable(newdata)
+```
+## Other Information
+To see the whole code including the app, visit this [link](https://github.com/Crumbofthypuss/RCourse9).  
+To visit the app, click this [link](https://crumbofthypuss.shinyapps.io/DiabetesDeterminer/).  
+**Thank you!**
